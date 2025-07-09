@@ -7,7 +7,7 @@ const nodemailer = require('nodemailer');
 
 const app = express();
 const PORT = 3000;
-const JWT_SECRET = '5ab3f07dce042a23b147bd22220b1e5724f2853473b293bcba2b7b8cc9db8c5c4ae668bd95aaead03e10e256b59af15a133b057939d241b34393f09ed8593ffe'; // Use environment variable in production
+const JWT_SECRET = ''; // Use your JWT Secret Key here
 
 app.use(cors());
 app.use(express.json());
@@ -42,14 +42,14 @@ async function main() {
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'sarojsen2009@gmail.com',
-        pass: 'fjls kive mdip mgza' // Use an App Password, not your Gmail password
+        user: '', // give you mail id here
+        pass: '' // Use an App Password, not your Gmail password
       }
     });
 
     try {
       await transporter.sendMail({
-        from: '"EcoCity OTP" <sarojsen2009@gmail.com>',
+        from: '"EcoCity OTP" < >',//give your mail id here
         to: email,
         subject: 'Your EcoCity OTP Code',
         text: `Your OTP is: ${otp}. It is valid for 10 minutes.`
