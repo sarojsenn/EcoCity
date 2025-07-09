@@ -4,7 +4,7 @@ EcoCity is a full-stack web application that promotes smart waste classification
 
 🔗 **Live Demo:** [eco-city-six.vercel.app](https://eco-city-six.vercel.app/)  
 🧠 **Made for:** BIS Hackathon  
-🏆 **Achievement:** Secured **3rd Prize** in the **Sustainability** category  
+🏆 **Achievement:** Secured **3rd Prize** in the **Sustainability** domain. 
 👨‍💻 **Team:** Bruteforce Army  
 - Saroj Sen  
 - Soumava Das  
@@ -16,24 +16,19 @@ EcoCity is a full-stack web application that promotes smart waste classification
 ## 🚀 Features
 
 - 🧾 Upload an image of any waste item for instant classification
-- ♻️ Classify as **Biodegradable** or **Non-Biodegradable**
+- ♻️ Classify as what type of waste **Cardboard**, **Paper**, **Plastic**, **Trash**, **Glass**, **Metal**
 - 📍 Get nearby waste disposal center suggestions
 - 📤 Shareable certificate for responsible waste handling
-- 📦 Interactive and modern front-end powered by **React.js**
-- 🧠 AI-based image classification (Backend)
-
----
-
-## 📸 Preview
-
-![EcoCity Screenshot](https://eco-city-six.vercel.app/preview.png) <!-- You can replace this with an actual screenshot URL -->
+- 📦 Interactive and modern front-end.
+- ✅ Report an Issue
+- 🗑️ TinkedCad Model of SmartBin
 
 ---
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js, CSS, Vite
-- **Backend:** Python (FastAPI/Flask)
+- **Frontend:** HTML, Tailwind CSS, Javascript
+- **Backend:** Node.js, Express.js
 - **ML Model:** TensorFlow / custom trained waste classifier
 - **Hosting:** Vercel (Frontend), Localhost (Backend)
 
@@ -51,14 +46,13 @@ EcoCity is a full-stack web application that promotes smart waste classification
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/sarojsenn/EcoCity.git
+git clone https://github.com/sarojsenn/EcoCity
 cd EcoCity
 ```
 
 ### 2. Start the Backend
 Go to the backend folder and run the server:
 ```
-cd backend
 npm install
 node app.js
 ```
