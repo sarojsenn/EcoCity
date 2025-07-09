@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waste Classifier | EcoCity</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.18.0/dist/tf.min.js"></script>
+  <style>
+    body { font-family: 'Quicksand', 'Poppins', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-900 font-Poppins min-h-screen flex flex-col">
+  <header class="flex items-center justify-between px-6 py-3 bg-green-700 text-white">
+    <div class="flex items-center gap-4">
+      <div class="w-10 h-10 rounded-full overflow-hidden">
+        <img src="https://i.pinimg.com/736x/5f/68/3e/5f683eb26c1a4d464278e70ba81d92d3.jpg" alt="EcoCity Logo" class="w-full h-full object-cover rounded-full">
+      </div>
+      <a href="index.html">
+        <h2 class="font-bold text-2xl font-serif text-black">EcoCity</h2>
+      </a>
+    </div>
+    <nav class="flex items-center gap-5 font-serif">
+      <a href="index.html" class="hover:text-green-400 transition">Home</a>
+      <a href="dashboard.html" class="hover:text-green-400 transition">Dashboard</a>
+      <a href="waste-classifier.html" class="text-green-300 font-bold">Waste Classifier</a>
+      <a href="locations.html" class="hover:text-green-400 transition">Locations</a>
+      <a href="#smart-bin" class="hover:text-green-400 transition">Smart-Bin</a>
+      <a href="#" class="hover:text-green-400 transition">Login🔐</a>
+    </nav>
+  </header>
+
+  <main class="flex-1 flex flex-col items-center justify-center px-4 py-10">
+    <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-8 w-full max-w-lg border border-white/20">
+      <h2 class="text-3xl font-bold text-green-400 mb-6 text-center">Waste Classifier (AI Powered)</h2>
+      <p class="text-gray-300 mb-6 text-center">
+        Upload a photo of a waste item and let our AI classify it!
+      </p>
+      <!-- Custom file input -->
+      <div class="flex flex-col items-center gap-2 mb-4">
+        <label for="wasteInput" class="cursor-pointer bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 shadow transition">
+          <i class="fas fa-upload mr-2"></i>Choose Image
+        </label>
+        <input type="file" id="wasteInput" accept="image/*" class="hidden" />
+        <span id="fileName" class="text-gray-200 text-sm"></span>
+      </div>
+      <p class="text-gray-300 text-sm mb-2 text-center">Supported formats: JPG, PNG. Max size: 5MB.</p>
+      <button id="classifyBtn" class="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 w-full mb-2">Classify Waste</button>
+      <div id="wasteResult" class="mt-6 text-center text-xl font-bold bg-white/20 text-green-200 p-4 rounded"></div>
+      <img id="wastePreview" class="mt-4 max-w-xs rounded shadow-lg border-2 border-green-400 hidden mx-auto" />
+    </div>
+  </main>
+
+  <footer class="bg-gray-950 text-gray-300 pt-8 pb-4 mt-12 font-serif w-full">
+    <div class="max-w-screen-xl mx-auto px-4 text-center text-sm text-gray-400">
+      © 2025 EcoCity. All rights reserved.
+    </div>
+  </footer>
+
+  <!-- Waste Classifier AI Script -->
+  <script>
+    // Adjust this to your actual model location (from Teachable Machine export)
+    const modelURL = "waste-model/model.json";
+    let wasteModel = null;
+    // Update this array to match your model's class order
+    const classes = ["Cardboard", "Glass", "Metal", "Paper", "Plastic", "Trash"];
+
+    // Disable classify button until model is loaded
+    const classifyBtn = document.getElementById('classifyBtn');
+    classifyBtn.disabled = true;
+    classifyBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+    async function loadWasteModel() {
+      wasteModel = await tf.loadLayersModel(modelURL);
+      classifyBtn.disabled = false;
+      classifyBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    }
+    loadWasteModel();
+
+    // Show selected file name
+    document.getElementById('wasteInput').addEventListener('change', function() {
+      const fileName = this.files.length ? this.files[0].name : '';
+      document.getElementById('fileName').textContent = fileName ? `Selected: ${fileName}` : '';
+    });
+
+    classifyBtn.onclick = async function() {
+      const fileInput = document.getElementById('wasteInput');
+      const resultDiv = document.getElementById('wasteResult');
+      const previewImg = document.getElementById('wastePreview');
+      resultDiv.textContent = '';
+      previewImg.classList.add('hidden');
+
+      if (!fileInput.files.length) {
+        resultDiv.textContent = 'Please select an image.';
+        return;
+      }
+
+      const file = fileInput.files[0];
+      // Optional: Check file size (e.g., 5MB limit)
+      if (file.size > 5 * 1024 * 1024) {
+        resultDiv.textContent = 'File too large. Please choose an image under 5MB.';
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = async function(e) {
+        const img = new window.Image();
+        img.src = e.target.result;
+        img.onload = async function() {
+          previewImg.src = img.src;
+          previewImg.classList.remove('hidden');
+          let tensor = tf.browser.fromPixels(img)
+            .resizeNearestNeighbor([224, 224])
+            .toFloat()
+            .div(tf.scalar(255)) // Normalize if your model expects it
+            .expandDims();
+          const prediction = await wasteModel.predict(tensor).data();
+          const topIdx = prediction.indexOf(Math.max(...prediction));
+          resultDiv.textContent = `Prediction: ${classes[topIdx]} (${(prediction[topIdx] * 100).toFixed(1)}%)`;
+        };
+      };
+      reader.readAsDataURL(file);
+    };
+  </script>
+</body>
+</html>

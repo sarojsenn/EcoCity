@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Waste Management</title>
+  <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    /* Fallback for font if Tailwind fails */
+    body { font-family: 'Quicksand', 'Poppins', sans-serif; }
+    /* Adjust modal z-index for mobile nav overlays */
+    #authModal { z-index: 9999; }
+    /* Prevent horizontal scroll */
+    html, body { overflow-x: hidden; }
+  </style>
+</head>
+<body class="bg-gray-900 font-Poppins">
+  <div class="min-h-screen flex flex-col">
+    <!-- Header -->
+    <header class="flex items-center justify-between px-4 md:px-10 py-3 bg-green-700 text-white">
+      <div class="flex items-center gap-4">
+        <!--Logo-->
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden">
+          <img src="https://i.pinimg.com/736x/5f/68/3e/5f683eb26c1a4d464278e70ba81d92d3.jpg" alt="EcoCity Logo" class="w-full h-full object-cover rounded-full">
+        </div>
+        <a href="index.html">
+          <h2 class="font-bold text-2xl md:text-4xl font-serif text-black">EcoCity</h2>
+        </a>
+      </div>
+      <!--Navigation-->
+      <nav class="hidden md:flex items-center gap-6 md:gap-8 font-serif">
+        <a href="#dashboard" class="relative inline-block text-white font-semibold text-lg group transition duration-300 hover:scale-105 hover:text-black">Dashboard</a>
+        <a href="locations.html" class="relative inline-block text-white font-semibold text-lg group transition duration-300 hover:scale-105 hover:text-black">Locations</a>
+        <a href="waste-classifier.html" class="relative inline-block text-white font-semibold text-lg group transition duration-300 hover:scale-105 hover:text-black">Waste Classifier</a>
+        <a href="#smart-bin" class="relative inline-block text-white font-semibold text-lg group transition duration-300 hover:scale-105 hover:text-black">Smart-Bin</a>
+        <a href="#" class="relative inline-block text-white font-semibold text-lg group transition duration-300 hover:scale-105 hover:text-black">Login🔐</a>
+        <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 transition hidden">Logout</button>
+      </nav>
+      <!-- Mobile Nav (Hamburger) -->
+      <div class="md:hidden">
+        <button id="mobileNavToggle" class="focus:outline-none">
+          <i class="fas fa-bars text-2xl"></i>
+        </button>
+      </div>
+    </header>
+    <!-- Mobile Navigation Drawer -->
+    <nav id="mobileNav" class="fixed inset-0 bg-black bg-opacity-80 z-50 flex-col items-center justify-center hidden">
+      <button id="closeMobileNav" class="absolute top-4 right-6 text-white text-3xl">&times;</button>
+      <div class="flex flex-col items-center mt-24 gap-8">
+        <a href="#dashboard" class="text-white text-xl" onclick="document.getElementById('mobileNav').classList.add('hidden')">Dashboard</a>
+        <a href="locations.html" class="text-white text-xl" onclick="document.getElementById('mobileNav').classList.add('hidden')">Locations</a>
+        <a href="waste-classifier.html" class="text-white text-xl" onclick="document.getElementById('mobileNav').classList.add('hidden')">Waste Classifier</a>
+        <a href="#smart-bin" class="text-white text-xl" onclick="document.getElementById('mobileNav').classList.add('hidden')">Smart-Bin</a>
+        <a href="#" class="text-white text-xl" onclick="document.getElementById('mobileNav').classList.add('hidden')">Login🔐</a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-2 md:px-10 py-5">
+      <div class="max-w-6xl mx-auto">
+        <!-- Hero Section -->
+        <div class="slideshow-container relative rounded-xl overflow-hidden text-white font-serif mb-8">
+          <div id="slideshow" class="relative p-4 md:p-10 transition-all duration-1000 ease-in-out bg-cover bg-center min-h-[40vh] md:min-h-[60vh] flex flex-col justify-center">
+            <div class="absolute inset-0 bg-black/50 z-0"></div>
+            <div class="relative z-10">
+              <h1 class="text-2xl md:text-5xl font-black mb-4 drop-shadow-lg">Welcome to EcoCity</h1>
+              <p class="mb-6 max-w-lg text-base md:text-xl drop-shadow">
+                We are committed to providing the best waste management services while ensuring environmental responsibility.
+              </p>
+              <button class="bg-green-700 text-base md:text-xl font-semibold px-5 py-3 rounded-xl w-fit hover:bg-green-800 transition-colors duration-300">
+                <a href="about.html">Learn More</a>
+              </button>
+            </div>
+          </div>
+          <div class="absolute right-4 bottom-4 flex gap-2 z-20">
+            <span class="dot w-2 h-2 md:w-3 md:h-3 bg-white rounded-full opacity-50 cursor-pointer"></span>
+            <span class="dot w-2 h-2 md:w-3 md:h-3 bg-white rounded-full opacity-50 cursor-pointer"></span>
+            <span class="dot w-2 h-2 md:w-3 md:h-3 bg-white rounded-full opacity-50 cursor-pointer"></span>
+          </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="px-2 md:px-6 py-8 md:py-12 bg-gray-900 font-serif text-gray-200 rounded-xl">
+          <div class="max-w-7xl mx-auto">
+            <h2 class="text-2xl md:text-4xl font-bold mb-6 md:mb-10 text-center text-green-400">EcoCity Dashboard</h2>
+            <div class="mb-6 md:mb-8 text-center">
+              <h2 class="text-2xl md:text-4xl font-bold text-green-400">
+                Hey, <span id="userName">User</span> 👋
+              </h2>
+              <p class="text-gray-300 mt-2 text-base md:text-lg">Welcome back to your EcoCity dashboard. Here’s what’s happening today.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8" id="dashboard-cards">
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-4 md:p-6 hover:shadow-2xl transition border border-white/20">
+                <h3 class="text-lg md:text-xl font-semibold mb-2 text-green-300">Smart Bins Active</h3>
+                <p id="smartBins" class="text-2xl md:text-4xl font-bold text-white">--</p>
+                <p class="text-sm text-gray-300 mt-1">Updated just now</p>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-4 md:p-6 hover:shadow-2xl transition border border-white/20">
+                <h3 class="text-lg md:text-xl font-semibold mb-2 text-green-300">Waste Collected</h3>
+                <p id="wasteCollected" class="text-2xl md:text-4xl font-bold text-white">--</p>
+                <p class="text-sm text-gray-300 mt-1">This Month</p>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-4 md:p-6 hover:shadow-2xl transition border border-white/20">
+                <h3 class="text-lg md:text-xl font-semibold mb-2 text-green-300">Recycling Rate</h3>
+                <p id="recyclingRate" class="text-2xl md:text-4xl font-bold text-white">--</p>
+                <p class="text-sm text-gray-300 mt-1">Goal: 85%</p>
+              </div>
+              <div class="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-4 md:p-6 hover:shadow-2xl transition border border-white/20">
+                <h3 class="text-lg md:text-xl font-semibold mb-2 text-green-300">Eco Volunteers</h3>
+                <p id="ecoVolunteers" class="text-2xl md:text-4xl font-bold text-white">--</p>
+                <p class="text-sm text-gray-300 mt-1">Across Zones</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Reward Section -->
+        <section class="flex flex-col items-center justify-center py-8 md:py-12 px-2 md:px-4 font-serif">
+          <div class="w-full max-w-xl bg-gradient-to-br from-green-600 to-green-800 text-white p-4 md:p-8 rounded-2xl shadow-lg text-center transition-transform duration-300 hover:scale-105">
+            <h3 class="text-2xl md:text-3xl font-bold mb-4">
+              Rewards Earned: <span id="rewardPoints" class="text-yellow-300">0</span> Points
+            </h3>
+            <p class="text-base md:text-lg mb-6 text-gray-100">
+              Keep contributing to earn more points and download your certificate!
+            </p>
+            <button 
+              id="downloadBtn" 
+              class="bg-yellow-400 text-green-900 font-semibold px-4 md:px-6 py-2 md:py-3 rounded-lg shadow-md hover:bg-yellow-300 hover:scale-105 transition-all duration-300 opacity-50 cursor-not-allowed"
+              disabled
+            >
+              Download Certificate
+            </button>
+            <span id="certMsg" class="text-sm text-gray-200 mt-2 block text-center">
+              Earn more points to unlock your certificate!
+            </span>
+            <canvas id="certificate" width="600" height="400" class="hidden mt-6"></canvas>
+          </div>
+        </section>
+
+        <!--SmartBin Tinkercad-->
+        <section class="my-8 md:my-16 text-center px-2 md:px-4" id="smart-bin">
+          <h2 class="text-2xl md:text-3xl font-bold text-green-700 mb-6 animate-fade-in">
+            🌿 Live Smart Bin Circuit
+          </h2>
+          <div class="relative mx-auto max-w-full md:max-w-4xl rounded-2xl shadow-2xl overflow-hidden border-4 border-emerald-600 animate-fade-in">
+            <iframe 
+              width="100%" 
+              height="300" 
+              class="md:h-[480px] w-full"
+              src="https://www.tinkercad.com/embed/jJhLkI63twK?editbtn=1" 
+              frameborder="0" 
+              marginwidth="0" 
+              marginheight="0" 
+              scrolling="no"
+            ></iframe>
+          </div>
+          <p class="mt-4 text-gray-400 text-sm italic">
+            Interact with the real-time simulation of our Smart Waste Management system.
+          </p>
+        </section>
+
+        <!-- Recycling Guide -->
+        <section class="py-8 md:py-12 px-2 md:px-4 font-serif">
+          <h2 class="text-2xl md:text-4xl font-bold text-green-700 dark:text-green-700 mb-6 md:mb-8 text-center">♻️ Recycling Guide</h2>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6">
+            <a href="plastic.html" class="group relative overflow-hidden rounded-xl aspect-square shadow-lg transition-transform duration-300 hover:scale-105">
+              <img src="https://cdn.usegalileo.ai/sdxl10/2c8baf3e-9648-4346-89d3-e4a94239e8f7.png" alt="Plastics" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
+              <div class="absolute inset-0 bg-black/40 flex items-end p-4">
+                <p class="text-white text-base md:text-xl font-bold tracking-wide group-hover:translate-y-[-4px] transition-transform duration-300">Plastics</p>
+              </div>
+            </a>
+            <a href="glass.html" class="group relative overflow-hidden rounded-xl aspect-square shadow-lg transition-transform duration-300 hover:scale-105">
+              <img src="https://cdn.usegalileo.ai/sdxl10/8b89898c-477d-473c-9423-00ee2baa7d62.png" alt="Glass" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
+              <div class="absolute inset-0 bg-black/40 flex items-end p-4">
+                <p class="text-white text-base md:text-xl font-bold tracking-wide group-hover:translate-y-[-4px] transition-transform duration-300">Glass</p>
+              </div>
+            </a>
+            <a href="metal.html" class="group relative overflow-hidden rounded-xl aspect-square shadow-lg transition-transform duration-300 hover:scale-105">
+              <img src="https://cdn.usegalileo.ai/sdxl10/85dd541c-6926-4a18-993f-6bad6a677f21.png" alt="Metal" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
+              <div class="absolute inset-0 bg-black/40 flex items-end p-4">
+                <p class="text-white text-base md:text-xl font-bold tracking-wide group-hover:translate-y-[-4px] transition-transform duration-300">Metal</p>
+              </div>
+            </a>
+            <a href="paper.html" class="group relative overflow-hidden rounded-xl aspect-square shadow-lg transition-transform duration-300 hover:scale-105">
+              <img src="https://cdn.usegalileo.ai/sdxl10/2421dc62-e89f-4433-98a3-1dd913955211.png" alt="Paper" class="w-full h-full object-cover transition-opacity duration-300 group-hover:opacity-80">
+              <div class="absolute inset-0 bg-black/40 flex items-end p-4">
+                <p class="text-white text-base md:text-xl font-bold tracking-wide group-hover:translate-y-[-4px] transition-transform duration-300">Paper</p>
+              </div>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-300 pt-8 md:pt-12 pb-6 mt-8 md:mt-12 font-serif w-full">
+      <div class="max-w-screen-xl mx-auto px-2 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-10">
+        <div>
+          <img src="https://i.pinimg.com/736x/5f/68/3e/5f683eb26c1a4d464278e70ba81d92d3.jpg" alt="EcoCity Logo" class="w-12 md:w-16 h-12 md:h-16 rounded-full mb-4">
+          <h1 class="text-xl md:text-2xl font-extrabold text-white mb-2">EcoCity</h1>
+          <p class="text-sm">
+            EcoCity is committed to building a sustainable future through smart waste management and community-driven recycling solutions.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-lg mb-3">Quick Links</h3>
+          <ul class="space-y-2 text-sm">
+            <li><a href="index.html" class="hover:text-green-400 transition">Home</a></li>
+            <li><a href="dashboard.html" class="hover:text-green-400 transition">Dashboard</a></li>
+            <li><a href="issue.html" class="hover:text-green-400 transition">Report an Issue</a></li>
+            <li><a href="plastic.html" class="hover:text-green-400 transition">Recycling Guide</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-lg mb-3">Contact Us</h3>
+          <p class="text-sm mb-2"><i class="fas fa-envelope mr-2 text-green-400"></i> support@ecocity.com</p>
+          <p class="text-sm mb-2"><i class="fas fa-phone-alt mr-2 text-green-400"></i> +91 xxxxxxxx</p>
+          <p class="text-sm"><i class="fas fa-map-marker-alt mr-2 text-green-400"></i> Bhubaneswar, Odisha, India</p>
+        </div>
+        <div>
+          <h3 class="text-white font-semibold text-lg mb-3">Follow Us</h3>
+          <div class="flex gap-4 mt-2 items-center">
+            <a href="#" class="text-xl hover:text-green-400 transition" title="X"><i class="fab fa-x-twitter"></i></a>
+            <a href="#" class="text-xl hover:text-green-400 transition" title="Facebook"><i class="fab fa-facebook"></i></a>
+            <a href="#" class="text-xl hover:text-green-400 transition" title="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-xl hover:text-green-400 transition" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="mt-8 md:mt-10 border-t border-gray-700 pt-4 text-center text-sm text-gray-400">
+        © 2025 EcoCity. All rights reserved.
+      </div>
+    </footer>
+
+    <!-- Login/Signup Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black/60 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-xl shadow-xl w-full max-w-md p-4 md:p-8 relative">
+        <button id="closeAuthModal" class="absolute top-2 right-4 text-2xl font-bold text-gray-400 hover:text-red-500">&times;</button>
+        <div id="authForms">
+          <!-- Login Form -->
+          <form id="loginForm" class="flex flex-col gap-4">
+            <h2 class="text-2xl font-bold text-green-700 mb-2 text-center">Login</h2>
+            <input type="email" id="loginEmail" placeholder="Email" required class="p-3 rounded border" />
+            <input type="password" id="loginPassword" placeholder="Password" required class="p-3 rounded border" />
+            <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Login</button>
+            <div id="loginError" class="text-red-500 text-sm mt-2 hidden"></div>
+            <p class="text-sm text-center mt-2">Don't have an account? <a href="#" id="showSignup" class="text-green-700 underline">Sign up</a></p>
+          </form>
+          <!-- Signup Form (hidden by default) -->
+          <form id="signupForm" class="flex flex-col gap-4 hidden">
+            <h2 class="text-2xl font-bold text-green-700 mb-2 text-center">Sign Up</h2>
+            <input type="email" id="signupEmail" placeholder="Email" required class="p-3 rounded border" />
+            <input type="password" id="signupPassword" placeholder="Password" required class="p-3 rounded border" />
+            <div class="flex gap-2">
+              <input type="text" id="signupOtp" placeholder="OTP" required class="p-3 rounded border flex-1" />
+              <button type="button" id="sendOtpBtn" class="bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700">Send OTP</button>
+              <button type="button" id="verifyOtpBtn" class="bg-green-600 text-white px-3 py-2 rounded hover:bg-green-700">Verify OTP</button>
+            </div>
+            <div id="otpStatus" class="text-sm mt-1"></div>
+            <button type="submit" id="signupSubmitBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" disabled>Sign Up</button>
+            <div id="signupError" class="text-red-500 text-sm mt-2 hidden"></div>
+            <p class="text-sm text-center mt-2">Already have an account? <a href="#" id="showLogin" class="text-green-700 underline">Login</a></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="main.js" defer></script>
+    <script src="app.js"></script>
+    <script>
+      // Mobile nav toggle
+      document.getElementById('mobileNavToggle').onclick = function() {
+        document.getElementById('mobileNav').classList.remove('hidden');
+      };
+      document.getElementById('closeMobileNav').onclick = function() {
+        document.getElementById('mobileNav').classList.add('hidden');
+      };
+    </script>
+  </div>
+</body>
+</html>

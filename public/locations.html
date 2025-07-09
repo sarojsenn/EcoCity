@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Waste Bin Alerts | EcoCity</title>
+    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64,">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        body { font-family: 'Quicksand', 'Poppins', sans-serif; }
+        #map { height: 400px; width: 100%; border-radius: 16px; }
+        .leaflet-container { background: #e6ffe6; }
+    </style>
+</head>
+<body class="bg-gray-900 min-h-screen flex flex-col font-Poppins">
+    <!-- Header -->
+    <header class="flex items-center justify-between px-4 md:px-10 py-3 bg-green-700 text-white">
+        <div class="flex items-center gap-4">
+            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden">
+                <img src="https://i.pinimg.com/736x/5f/68/3e/5f683eb26c1a4d464278e70ba81d92d3.jpg" alt="EcoCity Logo" class="w-full h-full object-cover rounded-full">
+            </div>
+            <a href="index.html">
+                <h2 class="font-bold text-2xl md:text-4xl font-serif text-black">EcoCity</h2>
+            </a>
+        </div>
+        <nav class="hidden md:flex items-center gap-6 md:gap-8 font-serif">
+            <a href="index.html" class="text-white font-semibold text-lg hover:text-green-200 transition">Home</a>
+            <a href="dashboard.html" class="text-white font-semibold text-lg hover:text-green-200 transition">Dashboard</a>
+            <a href="waste-classifier.html" class="text-white font-semibold text-lg hover:text-green-200 transition">Waste Classifier</a>
+            <a href="locations.html" class="text-white font-semibold text-lg hover:text-green-200 transition">Locations</a>
+            <a href="#smart-bin" class="text-white font-semibold text-lg hover:text-green-200 transition">Smart-Bin</a>
+            <a href="#" class="text-white font-semibold text-lg hover:text-green-200 transition">Login🔐</a>
+        </nav>
+        <div class="md:hidden">
+            <button id="mobileNavToggle" class="focus:outline-none">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center px-2 md:px-8 py-8">
+        <div class="w-full max-w-3xl bg-white/10 backdrop-blur-md rounded-2xl shadow-lg p-6 md:p-10 border border-white/20 mt-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-green-400 mb-2 text-center">Smart Bin Alerts & Location</h2>
+            <p class="mb-4 text-gray-200 text-center text-base md:text-lg">
+                The map detects your location and shows nearby bins. You will receive an alert if a bin is full.
+            </p>
+            <div id="map" class="mb-4"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-950 text-gray-300 pt-8 pb-4 mt-12 font-serif w-full">
+        <div class="max-w-screen-xl mx-auto px-4 text-center text-sm text-gray-400">
+            © 2025 EcoCity. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Map
+        var map = L.map('map').setView([20.2961, 85.8245], 13); // Default to Bhubaneswar
+
+        // Add OpenStreetMap Tile Layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Define Smart Waste Bins (With Fullness Status)
+        var smartBins = [
+            { lat: 20.3005, lon: 85.8227, name: "Bin at KIIT Gate 3", full: false },
+            { lat: 20.2982, lon: 85.8260, name: "Bin near KIIT Square", full: false },
+            { lat: 20.2955, lon: 85.8292, name: "Bin near Patia Big Bazaar", full: false }
+        ];
+
+        // Function to Add Bin Markers
+        function addBinMarkers() {
+            smartBins.forEach(bin => {
+                let binIcon = bin.full 
+                    ? 'https://cdn-icons-png.flaticon.com/512/1828/1828665.png' // Red Full Bin Icon
+                    : 'https://cdn-icons-png.flaticon.com/512/686/686092.png'; // Green Empty Bin Icon
+
+                L.marker([bin.lat, bin.lon], { icon: L.icon({
+                    iconUrl: binIcon,
+                    iconSize: [30, 30], 
+                    iconAnchor: [15, 30], 
+                    popupAnchor: [0, -30]
+                })})
+                .addTo(map)
+                .bindPopup(`<b>${bin.name}</b><br>Status: ${bin.full ? "<span style='color:red;'>Full</span>" : "<span style='color:green;'>Available</span>"}`);
+            });
+        }
+
+        // Add Markers Initially
+        addBinMarkers();
+
+        // Function to Simulate IoT Bin Full Alert (Random Bin Gets Full)
+        function simulateBinFullAlert() {
+            let randomBin = smartBins[Math.floor(Math.random() * smartBins.length)];
+            randomBin.full = true; // Mark it as full
+
+            alert(`⚠️ Alert! The waste bin at ${randomBin.name} is FULL. Please take action.`);
+            
+            // Refresh Map Markers to Show Updated Status
+            map.eachLayer(layer => {
+                if (layer instanceof L.Marker) {
+                    map.removeLayer(layer);
+                }
+            });
+            addBinMarkers();
+        }
+
+        // Trigger IoT Alert Every 15 Seconds (Simulated)
+        setInterval(simulateBinFullAlert, 15000); // Change 15000ms (15s) to real API call interval
+
+        // Get User's Location
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function (position) {
+                var userLat = position.coords.latitude;
+                var userLon = position.coords.longitude;
+                map.setView([userLat, userLon], 15);
+
+                // Add marker for user's location
+                L.marker([userLat, userLon], {
+                    icon: L.icon({
+                        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', // User Location Icon
+                        iconSize: [30, 30], 
+                        iconAnchor: [15, 30], 
+                        popupAnchor: [0, -30]
+                    })
+                }).addTo(map)
+                .bindPopup("<b>You are here!</b>")
+                .openPopup();
+
+            }, function () {
+                alert("Geolocation access denied. Showing default location.");
+            });
+        } else {
+            alert("Geolocation is not supported by this browser.");
+        }
+    </script>
+</body>
+</html>

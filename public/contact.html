@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2196F3, #1976D2);
+            color: white;
+            text-align: center;
+        }
+
+        h2 {
+            margin-top: 30px;
+            font-size: 2em;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .contact-card {
+            background: white;
+            color: black;
+            border-radius: 10px;
+            box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            margin: 20px;
+            width: 300px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: left;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 4px 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .contact-card h3 {
+            color: #007bff;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            font-size: 1em;
+            margin: 5px 0;
+        }
+
+        .copy-btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+
+    <h2>Contact Us</h2>
+
+    <div class="contact-section">
+
+        <!-- Bhubaneswar Contact -->
+        <div class="contact-card">
+            <h3>Bhubaneswar Office</h3>
+            <p><strong>Address:</strong> Bhubaneswar, Odisha, India</p>
+            <p><strong>Phone:</strong> <span id="phone-bbsr">+91-XXXXXXXXXX</span></p>
+            <p><strong>Email:</strong> <span id="email-bbsr">info@bhubaneswar.gov.in</span></p>
+            <button class="copy-btn" onclick="copyText('phone-bbsr')">Copy Phone</button>
+            <button class="copy-btn" onclick="copyText('email-bbsr')">Copy Email</button>
+        </div>
+
+        <!-- Patia Contact -->
+        <div class="contact-card">
+            <h3>Patia Office</h3>
+            <p><strong>Address:</strong> Patia, Bhubaneswar, Odisha, India</p>
+            <p><strong>Phone:</strong> <span id="phone-patia">+91-XXXXXXXXXX</span></p>
+            <p><strong>Email:</strong> <span id="email-patia">support@patia.gov.in</span></p>
+            <button class="copy-btn" onclick="copyText('phone-patia')">Copy Phone</button>
+            <button class="copy-btn" onclick="copyText('email-patia')">Copy Email</button>
+        </div>
+
+        <!-- KIIT Contact -->
+        <div class="contact-card">
+            <h3>KIIT Administration</h3>
+            <p><strong>Address:</strong> KIIT Campus, Patia, Bhubaneswar, Odisha, India</p>
+            <p><strong>Phone:</strong> <span id="phone-kiit">+91-674-2725113</span></p>
+            <p><strong>Email:</strong> <span id="email-kiit">info@kiit.ac.in</span></p>
+            <button class="copy-btn" onclick="copyText('phone-kiit')">Copy Phone</button>
+            <button class="copy-btn" onclick="copyText('email-kiit')">Copy Email</button>
+        </div>
+
+    </div>
+
+    <script>
+        function copyText(elementId) {
+            var text = document.getElementById(elementId).innerText;
+            var tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+            alert("Copied: " + text);
+        }
+    </script>
+
+</body>
+</html>
