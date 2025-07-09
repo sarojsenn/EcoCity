@@ -1,2 +1,72 @@
-# EcoCity
-This repository contains the EcoCIty project code made by team Bruteforce Army during the BIS Hackathon.
+# EcoCity 🌱
+
+EcoCity is a full-stack web application that promotes smart waste classification and eco-conscious living in urban environments. The platform allows users to upload images of waste materials, receive classification results (Biodegradable / Non-Biodegradable), and locate nearby disposal centers. It aims to bridge the gap between household waste management and sustainable city living.
+
+🔗 **Live Demo:** [eco-city-six.vercel.app](https://eco-city-six.vercel.app/)  
+🧠 **Made for:** BIS Hackathon  
+🏆 **Achievement:** Secured **3rd Prize** in the **Sustainability** category  
+👨‍💻 **Team:** Bruteforce Army  
+- Saroj Sen  
+- Soumava Das  
+- Sritama Kole  
+- Jigyansa Jena
+
+---
+
+## 🚀 Features
+
+- 🧾 Upload an image of any waste item for instant classification
+- ♻️ Classify as **Biodegradable** or **Non-Biodegradable**
+- 📍 Get nearby waste disposal center suggestions
+- 📤 Shareable certificate for responsible waste handling
+- 📦 Interactive and modern front-end powered by **React.js**
+- 🧠 AI-based image classification (Backend)
+
+---
+
+## 📸 Preview
+
+![EcoCity Screenshot](https://eco-city-six.vercel.app/preview.png) <!-- You can replace this with an actual screenshot URL -->
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend:** React.js, CSS, Vite
+- **Backend:** Python (FastAPI/Flask)
+- **ML Model:** TensorFlow / custom trained waste classifier
+- **Hosting:** Vercel (Frontend), Localhost (Backend)
+
+---
+
+## ⚠️ Disclaimer
+
+> **Note:** This app will **not function properly** unless the backend server is **manually started**.  
+> The deployed frontend at [eco-city-six.vercel.app](https://eco-city-six.vercel.app/) requires a running backend instance for features like image classification and location mapping to work.
+
+---
+
+## 🧪 How to Run Locally
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/sarojsenn/EcoCity.git
+cd EcoCity
+```
+
+### 2. Start the Backend
+Go to the backend folder and run the server:
+```
+cd backend
+npm install
+node app.js
+```
+🤝 Contributing
+We welcome suggestions and contributions. Please open an issue or a pull request!
+
+📃 License
+This project is licensed under the MIT License.
+
+💚 Built with Purpose
+EcoCity is not just a hackathon project—it’s a small step toward a cleaner, smarter, and more sustainable urban future.
