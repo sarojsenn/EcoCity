@@ -38,6 +38,13 @@ EcoCity is a full-stack web application that promotes smart waste classification
 
 > **Note:** This app will **not function properly** unless the backend server is **manually started**.  
 > The deployed frontend at [eco-city-six.vercel.app](https://eco-city-six.vercel.app/) requires a running backend instance for features like image classification and location mapping to work.
+> Give your own email and App Password in app.js to run the code correctly
+
+---
+## 📽️ Demo Video
+
+▶️ Watch the full demo on YouTube: https://youtu.be/D_R7P36N6SQ
+
 
 ---
 
